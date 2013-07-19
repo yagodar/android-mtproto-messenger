@@ -3,6 +3,9 @@
 
     <string name="app_name">MTProto Messenger</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="test_con">This is connection test.</string>
+    <string name="test_con_btn_label">test connection</string>
+    <string name="test_con_res">Connection test result.</string>
+    <string name="on_btn_click_method_name">onButtonClick</string>
 
 </resources>
