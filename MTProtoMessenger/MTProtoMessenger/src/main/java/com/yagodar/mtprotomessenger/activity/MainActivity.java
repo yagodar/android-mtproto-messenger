@@ -1,64 +1,64 @@
 package com.yagodar.mtprotomessenger.activity;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
 import com.yagodar.mtprotomessenger.R;
-import com.yagodar.mtprotomessenger.servercon.TCPClient;
-
-import java.util.ArrayList;
+import com.yagodar.mtprotomessenger.servercon.Client;
+import com.yagodar.mtprotomessenger.servercon.MessageListener;
 
 public class MainActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_llv);
+
+        client = new Client(getResources().getString(R.string.server_ip), getResources().getInteger(R.integer.server_port), new ServerMessageListener());
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    protected void onDestroy() {
+        super.onDestroy();
+
+        client.stopListening();
     }
 
     public void onButtonClick(View button) {
         switch(button.getId()) {
-            case R.id.btn_test_con:
-                // connect to the server
-                new connectTask().execute("");
-                //TODO look http://myandroidsolutions.blogspot.ru/2012/07/android-tcp-connection-tutorial.html
+            case 1:
+                client.startListening();
+
+                if(client.isListening()) {
+                    //TODO
+                }
+                else {
+                    //TODO
+                }
+
+                break;
+            case 2:
+                byte buffer[] = "hello".getBytes();//TODO запрос другой естественно
+
+                if(client.sendMessage(buffer)) {
+                    //TODO
+                }
+                else {
+                    //TODO
+                }
+
                 break;
             default:
                 break;
         }
     }
 
-    public class connectTask extends AsyncTask<String,String,TCPClient> {
-
+    private class ServerMessageListener implements MessageListener {
         @Override
-        protected TCPClient doInBackground(String... message) {
-
-            //we create a TCPClient object and
-            mTcpClient = new TCPClient(new TCPClient.OnMessageReceived() {
-                @Override
-                //here the messageReceived method is implemented
-                public void messageReceived(String message) {
-                    //this method calls the onProgressUpdate
-                    publishProgress(message);
-                }
-            });
-            mTcpClient.run();
-
-            return null;
+        public void onMessageReceived(int numberOfBytes, byte[] buffer) {
+            //TODO
         }
     }
 
-    private TCPClient mTcpClient;
-    private ArrayList<String> arrayList;
+    private Client client;
 }
