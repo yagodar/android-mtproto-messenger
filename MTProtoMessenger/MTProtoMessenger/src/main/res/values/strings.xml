@@ -3,13 +3,18 @@
 
     <string name="app_name">MTProto Messenger</string>
 
-    <string name="greeting">This is connection test.</string>
+    <string name="greeting">connection test</string>
 
-    <string name="btn_lbl_connect_to_server">Connect to Server</string>
-    <string name="connection_result">Connection result</string>
+    <string name="btn_connect_disconnect">connect/disconnect</string>
+    <string name="connected">connected</string>
+    <string name="disconnected">disconnected</string>
 
-    <string name="btn_lbl_send_msg_to_server">Send msg to Server</string>
-    <string name="sending_msg_result">Sending msg result</string>
+    <string name="btn_send_1_nonce">send [1] nonce</string>
+
+    <string name="response">response</string>
+
+    <string name="result">result</string>
+    <string name="error">error</string>
 
     <string name="on_btn_click_method_name">onButtonClick</string>
 

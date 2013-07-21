@@ -1,62 +1,69 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/row_height"
+            android:text="@string/greeting"
+            android:gravity="center_vertical|center_horizontal"/>
 
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="@dimen/row_height"
+            android:orientation="horizontal">
+
+        <Button
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="fill_parent"
+                android:text="@string/btn_connect_disconnect"
+                android:id="@+id/btn_connect_disconnect"
+                android:onClick="@string/on_btn_click_method_name"
+                android:gravity="center_vertical|center_horizontal"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/greeting"
-            android:layout_gravity="center"/>
-
-        <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="70dp">
-
-            <Button
-                    android:layout_width="100dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/btn_lbl_connect_to_server"
-                    android:id="@+id/btn_connect_to_server"
-                    android:onClick="@string/on_btn_click_method_name"
-                    android:layout_gravity="center"/>
-
-            <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="@string/connection_result"
-                    android:id="@+id/tv_conection_result"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="70dp">
-
-            <Button
-                    android:layout_width="100dp"
-                    android:layout_height="fill_parent"
-                    android:text="@string/btn_lbl_send_msg_to_server"
-                    android:id="@+id/btn_send_msg_to_server"
-                    android:onClick="@string/on_btn_click_method_name"
-                    android:layout_gravity="center"/>
-
-            <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="@string/sending_msg_result"
-                    android:id="@+id/tv_sending_msg_result"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|center_horizontal"/>
-        </LinearLayout>
-
+                android:layout_height="fill_parent"
+                android:text="@string/result"
+                android:id="@+id/tv_connect_disconnect_result"
+                android:gravity="center_vertical|center_horizontal"/>
     </LinearLayout>
 
-</RelativeLayout>
+    <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView">
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/row_height"
+                android:orientation="horizontal">
+
+            <Button
+                    android:layout_width="@dimen/btn_width"
+                    android:layout_height="fill_parent"
+                    android:text="@string/btn_send_1_nonce"
+                    android:id="@+id/btn_send_1_nonce"
+                    android:onClick="@string/on_btn_click_method_name"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="@string/result"
+                    android:id="@+id/tv_send_1_nonce_result"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/response"
+            android:id="@+id/tv_response"
+            android:gravity="left|top"/>
+
+</LinearLayout>

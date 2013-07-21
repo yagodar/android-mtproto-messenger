@@ -1,4 +1,7 @@
 <resources>
     <style name="AppTheme" parent="@android:Theme.Light">
     </style>
+
+    <dimen name="row_height">48dp</dimen>
+    <dimen name="btn_width">192dp</dimen>
 </resources>

@@ -3,6 +3,7 @@ package com.yagodar.mtprotomessenger.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.yagodar.mtprotomessenger.R;
 import com.yagodar.mtprotomessenger.servercon.Client;
@@ -26,14 +27,26 @@ public class MainActivity extends Activity {
 
     public void onButtonClick(View button) {
         switch(button.getId()) {
-            case 1:
-                client.startListening();
+            case R.id.btn_connect_disconnect:
+                if(!client.isListening()) {
+                    client.startListening();
 
-                if(client.isListening()) {
-                    //TODO
+                    if(client.isListening()) {
+                        ((TextView) findViewById(R.id.tv_connect_disconnect_result)).setText(R.string.connected);
+                    }
+                    else {
+                        ((TextView) findViewById(R.id.tv_connect_disconnect_result)).setText(R.string.error);
+                    }
                 }
                 else {
-                    //TODO
+                    client.stopListening();
+
+                    if(client.isListening()) {
+                        ((TextView) findViewById(R.id.tv_connect_disconnect_result)).setText(R.string.error);
+                    }
+                    else {
+                        ((TextView) findViewById(R.id.tv_connect_disconnect_result)).setText(R.string.disconnected);
+                    }
                 }
 
                 break;
@@ -56,7 +69,7 @@ public class MainActivity extends Activity {
     private class ServerMessageListener implements MessageListener {
         @Override
         public void onMessageReceived(int numberOfBytes, byte[] buffer) {
-            //TODO
+            ((TextView) findViewById(R.id.tv_response)).setText(new String(buffer));//TODO позже разбор
         }
     }
 
