@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         switch(button.getId()) {
             case R.id.btn_connect_disconnect:
                 if(!client.isListening()) {
-                    client.startListening();
+                    client.startListening();//TODO ошибка ! нобходимо отдельным потоком!!!
 
                     if(client.isListening()) {
                         ((TextView) findViewById(R.id.tv_connect_disconnect_result)).setText(R.string.connected);
