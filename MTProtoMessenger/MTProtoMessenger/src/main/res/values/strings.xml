@@ -14,6 +14,7 @@
     <string name="response">response</string>
 
     <string name="result">result</string>
+    <string name="ok">ok</string>
     <string name="error">error</string>
 
     <string name="on_btn_click_method_name">onButtonClick</string>

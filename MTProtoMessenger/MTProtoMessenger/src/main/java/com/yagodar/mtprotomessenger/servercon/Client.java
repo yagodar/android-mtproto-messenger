@@ -10,10 +10,11 @@ import java.net.Socket;
  * Created by Yagodar on 19.07.13.
  */
 public class Client {
-    public Client(String serverIP, int serverPort, MessageListener messageListener) {
+    public Client(String serverIP, int serverPort, MessageListener messageListener, ConnectListener connectListener) {
         this.serverIP = serverIP;
         this.serverPort = serverPort;
         this.messageListener = messageListener;
+        this.connectListener = connectListener;
     }
 
     public void startListening() {
@@ -33,13 +34,21 @@ public class Client {
                 Log.e(locLogTag, "error while connecting. break.");
                 return;
             }
+            else {
+                Log.i(locLogTag, "resume listening...");
+                resumeListening();
+
+                connectListener.onConnected();
+            }
         }
         else {
             Log.i(locLogTag, "client already connected. (serverSocket='" + serverSocket + "';serverSocket.InetAddress='" + serverSocket.getInetAddress() + "').");
         }
 
-        Log.i(locLogTag, "resume listening...");
-        resumeListening();
+        if(!isListenEnabled()) {
+            Log.i(locLogTag, "resume listening...");
+            resumeListening();
+        }
 
         Log.i(locLogTag, "creating read buffer[]... (size='" + BUFFER_SIZE + "')");
 
@@ -69,14 +78,20 @@ public class Client {
     }
 
     public boolean sendMessage(byte buffer[]) {
+        String locLogTag = LOG_TAG + ".sendMessage";
+
+        Log.i(locLogTag, "sending message '" + new String(buffer) + "'...");
+
         try {
             serverOutputStream.write(buffer);
             serverOutputStream.flush();
         }
         catch (Exception e) {
-            //TODO
+            Log.e(locLogTag, "error. (serverOutputStream='" + serverOutputStream + "').", e);
             return false;
         }
+
+        Log.i(locLogTag, "message  '" + new String(buffer) + "' sent.");
 
         return true;
     }
@@ -172,7 +187,8 @@ public class Client {
     private String serverIP;
     private int serverPort;
 
-    private MessageListener messageListener = null;
+    private MessageListener messageListener;
+    private ConnectListener connectListener;
 
     private Socket serverSocket;
     private OutputStream serverOutputStream;
