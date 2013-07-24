@@ -77,10 +77,10 @@ public class Client {
         }
     }
 
-    public boolean sendMessage(byte buffer[]) {
-        String locLogTag = LOG_TAG + ".sendMessage";
+    public boolean sendBuffer(byte buffer[]) {
+        String locLogTag = LOG_TAG + ".sendBuffer";
 
-        Log.i(locLogTag, "sending message '" + new String(buffer) + "'...");
+        Log.i(locLogTag, "sending buffer '" + new String(buffer) + "'...");
 
         try {
             serverOutputStream.write(buffer);
@@ -91,9 +91,17 @@ public class Client {
             return false;
         }
 
-        Log.i(locLogTag, "message  '" + new String(buffer) + "' sent.");
+        Log.i(locLogTag, "buffer  '" + new String(buffer) + "' sent.");
 
         return true;
+    }
+
+    public int getSendablePacketSN() {
+        return sendablePacketSN;
+    }
+
+    public void incSendablePacketSN() {
+        sendablePacketSN++;
     }
 
     public void pauseListening() {
@@ -195,6 +203,8 @@ public class Client {
     private InputStream serverInputStream;
 
     private boolean isListenEnabled = false;
+
+    private int sendablePacketSN;
 
     private static final int BUFFER_SIZE = 65536; //TODO разобраться с размером. сейчас 64*1024
     private static final String LOG_TAG = Client.class.getSimpleName();

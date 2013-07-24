@@ -11,6 +11,8 @@ import com.yagodar.mtprotomessenger.R;
 import com.yagodar.mtprotomessenger.servercon.Client;
 import com.yagodar.mtprotomessenger.servercon.ConnectListener;
 import com.yagodar.mtprotomessenger.servercon.MessageListener;
+import com.yagodar.mtprotomessenger.servercon.packet.PacketTransceiver;
+import com.yagodar.mtprotomessenger.servercon.packet.client.NoncePacket;
 
 public class MainActivity extends Activity {
     @Override
@@ -59,8 +61,17 @@ public class MainActivity extends Activity {
 
                 break;
             case R.id.btn_send_1_nonce:
-                byte buffer[] = new byte[] { 60469778,  };
-                onSendMessage(buffer, client.sendMessage(buffer), R.id.tv_send_1_nonce_result);
+                String locLogTag = LOG_TAG + ".onSendMessage";
+
+                if(PacketTransceiver.getInstance().sendPacket(client, new NoncePacket(), true)) {
+                    ((TextView) findViewById(R.id.tv_send_1_nonce_result)).setText(R.string.ok);
+                    //Log.i(locLogTag, "send: '" + new String(buffer) + "'.");//TODO
+                }
+                else {
+                    ((TextView) findViewById(R.id.tv_send_1_nonce_result)).setText(R.string.error);
+                    //Log.i(locLogTag, "error on send: '" + new String(buffer) + "'.");
+                }
+
                 break;
             default:
                 break;
@@ -98,19 +109,6 @@ public class MainActivity extends Activity {
 
         //((TextView) findViewById(R.id.tv_response)).setText(new String(buffer, 0, numberOfBytes));//TODO позже разбор //TODO adapter
         Log.i(locLogTag, new String(buffer, 0, numberOfBytes));
-    }
-
-    private void onSendMessage(byte[] buffer, boolean success, int resTvId) {
-        String locLogTag = LOG_TAG + ".onSendMessage";
-
-        if(success) {
-            ((TextView) findViewById(resTvId)).setText(R.string.ok);
-            Log.i(locLogTag, "send: '" + new String(buffer) + "'.");
-        }
-        else {
-            ((TextView) findViewById(resTvId)).setText(R.string.error);
-            Log.i(locLogTag, "error on send: '" + new String(buffer) + "'.");
-        }
     }
 
     private class ServerListener implements MessageListener, ConnectListener {
