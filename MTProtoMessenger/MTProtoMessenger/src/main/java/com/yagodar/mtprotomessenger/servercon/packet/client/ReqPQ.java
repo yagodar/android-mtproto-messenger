@@ -7,8 +7,8 @@ import com.yagodar.mtprotomessenger.servercon.packet.SendablePacket;
 /**
  * Created by Yagodar on 24.07.13.
  */
-public class NoncePacket extends SendablePacket {
-    public NoncePacket() {
+public class ReqPQ extends SendablePacket {
+    public ReqPQ() {
         //TODO сериализация и прочее. а пока что вручную, грубо.
         super(40); //http://dev.stel.com/mtproto/samples-auth_key#1-zapros-p-q-avtorizatsii
     }

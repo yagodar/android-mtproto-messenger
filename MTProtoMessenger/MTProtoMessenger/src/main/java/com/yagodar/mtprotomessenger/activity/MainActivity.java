@@ -12,7 +12,7 @@ import com.yagodar.mtprotomessenger.servercon.Client;
 import com.yagodar.mtprotomessenger.servercon.ConnectListener;
 import com.yagodar.mtprotomessenger.servercon.MessageListener;
 import com.yagodar.mtprotomessenger.servercon.packet.PacketTransceiver;
-import com.yagodar.mtprotomessenger.servercon.packet.client.NoncePacket;
+import com.yagodar.mtprotomessenger.servercon.packet.client.ReqPQ;
 
 public class MainActivity extends Activity {
     @Override
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
             case R.id.btn_send_1_nonce:
                 String locLogTag = LOG_TAG + ".onSendMessage";
 
-                if(PacketTransceiver.getInstance().sendPacket(client, new NoncePacket(), true)) {
+                if(PacketTransceiver.getInstance().sendPacket(client, new ReqPQ(), true)) {
                     ((TextView) findViewById(R.id.tv_send_1_nonce_result)).setText(R.string.ok);
                     //Log.i(locLogTag, "send: '" + new String(buffer) + "'.");//TODO
                 }
@@ -109,6 +109,8 @@ public class MainActivity extends Activity {
 
         //((TextView) findViewById(R.id.tv_response)).setText(new String(buffer, 0, numberOfBytes));//TODO позже разбор //TODO adapter
         Log.i(locLogTag, new String(buffer, 0, numberOfBytes));
+
+        PacketTransceiver.getInstance().receivePacketBuffer(client, buffer, true);
     }
 
     private class ServerListener implements MessageListener, ConnectListener {

@@ -1,6 +1,7 @@
 package com.yagodar.mtprotomessenger.servercon.packet;
 
 import com.yagodar.mtprotomessenger.servercon.Client;
+import com.yagodar.mtprotomessenger.servercon.packet.server.ResPQ;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -37,17 +38,13 @@ public class PacketTransceiver {
 
                 packetBuffer.putInt((int) packetBufferCRC32.getValue());
 
-                String bufferStr = "";
-                for(byte bufferByte : packetBuffer.array()) {
-                    bufferStr += Integer.toHexString(bufferByte) + " ";
-                }
-
                 if(client.sendBuffer(packetBuffer.array())) {
                     client.incSendablePacketSN();
                 }
             }
             else {
                 //TODO
+                return false;
             }
         }
         catch (Exception e) {
@@ -58,10 +55,61 @@ public class PacketTransceiver {
         return true;
     }
 
-    private static int PACKET_LENGTH_SIZE = 4;
-    private static int PACKET_SNUMBER_SIZE = 4;
-    private static int PACKET_CRC32_SIZE = 4;
-    private static int PACKET_CONST_LENGTH_SNUMBER_CRC32_SIZE = PACKET_LENGTH_SIZE + PACKET_SNUMBER_SIZE + PACKET_CRC32_SIZE;
+    public boolean receivePacketBuffer(Client client, byte[] packetBuffer, boolean fullProtocol) {
+        try {
+            if(fullProtocol) {
+
+                ByteBuffer schemerNameBuffer = ByteBuffer.allocate(4);
+                schemerNameBuffer.put(packetBuffer, PACKET_LENGTH_SIZE + PACKET_SNUMBER_SIZE + 8 + 8 + 4, 4);
+
+                String schemerNameHexString = getHexString(schemerNameBuffer.array());
+
+                //resPQ
+                if(schemerNameHexString.equals("0x05162463")) {
+                    new ResPQ(client, packetBuffer);
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                //TODO
+                return false;
+            }
+        }
+        catch (Exception e) {
+            //TODO
+            return false;
+        }
+
+        return true;
+    }
+
+    public String getHexString(byte[] data) {
+        String dataHexString = null;
+        if(data != null && data.length > 0) {
+            dataHexString = "0x";
+            for(int i = data.length - 1; i >= 0; i--) {
+                String hexString = Integer.toHexString(data[i]);
+                if(hexString.length() > 2) {
+                    dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
+                }
+                else if(hexString.length() == 1) {
+                    dataHexString += "0" + hexString;
+                }
+                else {
+                    dataHexString += hexString;
+                }
+            }
+        }
+
+        return dataHexString;
+    }
+
+    public static int PACKET_LENGTH_SIZE = 4;
+    public static int PACKET_SNUMBER_SIZE = 4;
+    public static int PACKET_CRC32_SIZE = 4;
+    public static int PACKET_CONST_LENGTH_SNUMBER_CRC32_SIZE = PACKET_LENGTH_SIZE + PACKET_SNUMBER_SIZE + PACKET_CRC32_SIZE;
 
     private static PacketTransceiver INSTANCE;
 }
