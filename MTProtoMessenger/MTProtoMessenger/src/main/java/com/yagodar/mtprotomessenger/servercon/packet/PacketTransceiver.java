@@ -86,19 +86,39 @@ public class PacketTransceiver {
     }
 
     public String getHexString(byte[] data) {
+        return getHexString(data, false);
+    }
+
+    public String getHexString(byte[] data, boolean bigEndian) {
         String dataHexString = null;
         if(data != null && data.length > 0) {
             dataHexString = "0x";
-            for(int i = data.length - 1; i >= 0; i--) {
-                String hexString = Integer.toHexString(data[i]);
-                if(hexString.length() > 2) {
-                    dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
+            if(bigEndian) {
+                for(int i = 0; i < data.length; i++) {
+                    String hexString = Integer.toHexString(data[i]);
+                    if(hexString.length() > 2) {
+                        dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
+                    }
+                    else if(hexString.length() == 1) {
+                        dataHexString += "0" + hexString;
+                    }
+                    else {
+                        dataHexString += hexString;
+                    }
                 }
-                else if(hexString.length() == 1) {
-                    dataHexString += "0" + hexString;
-                }
-                else {
-                    dataHexString += hexString;
+            }
+            else {
+                for(int i = data.length - 1; i >= 0; i--) {
+                    String hexString = Integer.toHexString(data[i]);
+                    if(hexString.length() > 2) {
+                        dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
+                    }
+                    else if(hexString.length() == 1) {
+                        dataHexString += "0" + hexString;
+                    }
+                    else {
+                        dataHexString += hexString;
+                    }
                 }
             }
         }

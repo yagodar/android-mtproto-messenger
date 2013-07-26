@@ -15,25 +15,31 @@ public abstract class SendablePacket implements Packet {
     abstract public void writePayload();
 
     protected SendablePacket(int payloadLength) {
+        this(payloadLength, true);
+    }
+
+    protected SendablePacket(int payloadLength, boolean writePayload) {
         payload = ByteBuffer.allocate(payloadLength);
         payload.order(ByteOrder.LITTLE_ENDIAN);
-        writePayload();
+        if(writePayload) {
+            writePayload();
+        }
     }
 
     protected void writeInt(int value) {
         payload.putInt(value);
     }
 
-    protected void writeInt(int index, int value) {
-        payload.putInt(index, value);
-    }
-
     protected void writeLong(long value) {
         payload.putLong(value);
     }
 
-    protected void writeLong(int index, long value) {
-        payload.putLong(index, value);
+    protected void writeByte(byte value) {
+        payload.put(value);
+    }
+
+    protected void writeData(byte[] data) {
+        payload.put(data);
     }
 
     private ByteBuffer payload;

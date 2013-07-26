@@ -28,6 +28,6 @@ public class ReqPQ extends SendablePacket {
         for(byte payloadByte : getPayload()) {
             payloadStr += Integer.toHexString(payloadByte) + " ";
         }
-        System.out.println(payloadStr);
+        System.out.println();
     }
 }
