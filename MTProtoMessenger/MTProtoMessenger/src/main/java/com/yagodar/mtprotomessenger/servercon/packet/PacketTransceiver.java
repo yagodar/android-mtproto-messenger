@@ -1,5 +1,6 @@
 package com.yagodar.mtprotomessenger.servercon.packet;
 
+import com.yagodar.mtprotomessenger.Util;
 import com.yagodar.mtprotomessenger.servercon.Client;
 import com.yagodar.mtprotomessenger.servercon.packet.server.ResPQ;
 
@@ -62,10 +63,10 @@ public class PacketTransceiver {
                 ByteBuffer schemerNameBuffer = ByteBuffer.allocate(4);
                 schemerNameBuffer.put(packetBuffer, PACKET_LENGTH_SIZE + PACKET_SNUMBER_SIZE + 8 + 8 + 4, 4);
 
-                String schemerNameHexString = getHexString(schemerNameBuffer.array());
+                String schemerNameHexStr = Util.getHexString(schemerNameBuffer.array());
+                long schemerNameHex = Long.decode(schemerNameHexStr);
 
-                //resPQ
-                if(schemerNameHexString.equals("0x05162463")) {
+                if(schemerNameHex == 0x05162463) {//resPQ
                     new ResPQ(client, packetBuffer);
                 }
                 else {
@@ -83,47 +84,6 @@ public class PacketTransceiver {
         }
 
         return true;
-    }
-
-    public String getHexString(byte[] data) {
-        return getHexString(data, false);
-    }
-
-    public String getHexString(byte[] data, boolean bigEndian) {
-        String dataHexString = null;
-        if(data != null && data.length > 0) {
-            dataHexString = "0x";
-            if(bigEndian) {
-                for(int i = 0; i < data.length; i++) {
-                    String hexString = Integer.toHexString(data[i]);
-                    if(hexString.length() > 2) {
-                        dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
-                    }
-                    else if(hexString.length() == 1) {
-                        dataHexString += "0" + hexString;
-                    }
-                    else {
-                        dataHexString += hexString;
-                    }
-                }
-            }
-            else {
-                for(int i = data.length - 1; i >= 0; i--) {
-                    String hexString = Integer.toHexString(data[i]);
-                    if(hexString.length() > 2) {
-                        dataHexString += hexString.substring(hexString.length() - 2, hexString.length());
-                    }
-                    else if(hexString.length() == 1) {
-                        dataHexString += "0" + hexString;
-                    }
-                    else {
-                        dataHexString += hexString;
-                    }
-                }
-            }
-        }
-
-        return dataHexString;
     }
 
     public static int PACKET_LENGTH_SIZE = 4;

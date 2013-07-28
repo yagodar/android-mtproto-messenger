@@ -1,5 +1,6 @@
 package com.yagodar.mtprotomessenger.servercon.packet.client;
 
+import com.yagodar.mtprotomessenger.Util;
 import com.yagodar.mtprotomessenger.servercon.packet.PacketTransceiver;
 import com.yagodar.mtprotomessenger.servercon.packet.SendablePacket;
 
@@ -20,23 +21,11 @@ public class PQInnerData extends SendablePacket {
     @Override
     public void writePayload() {
         writeInt(0x83c95aec);//%(p_q_inner_data)
-        writeData(pq);
-
-        String pHexString = Long.toHexString(p);
-        String firstStr = "0x" + pHexString.substring(4, pHexString.length() - 2) + pHexString.substring(2, pHexString.length() - 4) + pHexString.substring(0, pHexString.length() - 6) + "04";
-        writeInt(Integer.decode(firstStr));
-        String secondStr = "0x" + "000000" + pHexString.substring(pHexString.length() - 2);
-        writeInt(Integer.decode(secondStr));
-
-        pHexString = Long.toHexString(q);
-        firstStr = "0x" + pHexString.substring(4, pHexString.length() - 2) + pHexString.substring(2, pHexString.length() - 4) + pHexString.substring(0, pHexString.length() - 6) + "04";
-        writeInt(Integer.decode(firstStr));
-        secondStr = "0x" + "000000" + pHexString.substring(pHexString.length() - 2);
-        writeInt(Integer.decode(secondStr));
-
+        writeData(pq);//pq
+        writeData(Util.decodeMTProtoHexString(Long.toHexString(p)));//p
+        writeData(Util.decodeMTProtoHexString(Long.toHexString(q)));//q
         writeData(nonce);
         writeData(serverNonce);
-
         writeInt(0x311C85DB);//new_nonce 311C85DB 234AA264 0AFC4A76 A735CF5B
         writeInt(0x234AA264);//new_nonce
         writeInt(0x0AFC4A76);//new_nonce
@@ -46,7 +35,7 @@ public class PQInnerData extends SendablePacket {
         writeInt(0xE1229AD8);//new_nonce
         writeInt(0x67CC024D);//new_nonce
 
-        String payloadStr = PacketTransceiver.getInstance().getHexString(getPayload());
+        String payloadStr = Util.getHexStringForView(getPayload());
         System.out.println();
     }
 

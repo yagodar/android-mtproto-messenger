@@ -1,5 +1,6 @@
 package com.yagodar.mtprotomessenger.servercon.packet;
 
+import com.yagodar.mtprotomessenger.Util;
 import com.yagodar.mtprotomessenger.servercon.Client;
 
 import java.nio.ByteBuffer;
@@ -23,7 +24,7 @@ public abstract class ReceivablePacket implements Packet {
 
         ByteBuffer packetLengthBuffer = ByteBuffer.allocate(PacketTransceiver.PACKET_LENGTH_SIZE);
         packetLengthBuffer.put(packetBuffer, 0, PacketTransceiver.PACKET_LENGTH_SIZE);
-        String packetLengthHexString = PacketTransceiver.getInstance().getHexString(packetLengthBuffer.array());
+        String packetLengthHexString = Util.getHexString(packetLengthBuffer.array());
 
         int payloadLength = Integer.decode(packetLengthHexString) - PacketTransceiver.PACKET_CONST_LENGTH_SNUMBER_CRC32_SIZE;
 

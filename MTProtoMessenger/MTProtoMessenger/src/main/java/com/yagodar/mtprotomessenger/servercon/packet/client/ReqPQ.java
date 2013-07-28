@@ -2,6 +2,7 @@ package com.yagodar.mtprotomessenger.servercon.packet.client;
 
 import android.content.SyncStatusObserver;
 
+import com.yagodar.mtprotomessenger.Util;
 import com.yagodar.mtprotomessenger.servercon.packet.SendablePacket;
 
 /**
@@ -24,10 +25,7 @@ public class ReqPQ extends SendablePacket {
         writeInt(0x66B301A4);//nonce
         writeInt(0x8FECE2FC);//nonce
 
-        String payloadStr = "";
-        for(byte payloadByte : getPayload()) {
-            payloadStr += Integer.toHexString(payloadByte) + " ";
-        }
+        String payloadStr = Util.getHexStringForView(getPayload(), true);
         System.out.println();
     }
 }
